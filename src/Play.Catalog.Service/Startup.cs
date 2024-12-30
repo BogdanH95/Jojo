@@ -1,8 +1,12 @@
-namespace Play.Catalog.Service.Entities
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+
+namespace Play.Catalog.Service
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; };
+        public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -21,7 +25,7 @@ namespace Play.Catalog.Service.Entities
             BsonSerializer.RegisterSerializer(new DecimalSerializer(BsonType.String));
         }
 
-         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseSwagger();
