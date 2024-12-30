@@ -1,13 +1,11 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Play.Catalog.Service.Entities;
 
 namespace Play.Catalog.Service.Repositories
 {
-    public class ItemsRepository
+
+    public class ItemsRepository : IItemRepository
     {
         private const string collectionName = "items";
         private readonly IMongoCollection<Item> dbCollection;
