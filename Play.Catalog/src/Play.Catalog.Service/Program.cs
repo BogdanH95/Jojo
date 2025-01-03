@@ -1,4 +1,4 @@
-namespace Play.Catalog.Service.Entities
+namespace Play.Catalog.Service
 {
     public class Program
     {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Play.Catalog.Service.Dtos;
 using Play.Catalog.Service.Entities;
@@ -10,6 +11,7 @@ namespace Play.Catalog.Service.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IRepository<Item> repository;
+        private static int requestCounter = 0;
 
         public ItemsController(IRepository<Item> repository)
         {
@@ -19,8 +21,24 @@ namespace Play.Catalog.Service.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ItemDto>>> GetAsync(CancellationToken ct)
         {
+            requestCounter++;
+            Console.WriteLine($"Request {requestCounter}: Starting..");
+            if (requestCounter <= 2)
+            {
+                Console.WriteLine($"Request {requestCounter}: Delaying..");
+                await Task.Delay(TimeSpan.FromSeconds(10), ct);
+            }
+            if (requestCounter <= 4)
+            {
+                Console.WriteLine($"Request {requestCounter}: 500 Internal Server Error.");
+                return StatusCode(500);
+            }
+
             var items = (await repository.GetAllAsync(ct))
                         .Select(item => item.AsDto());
+
+            Console.WriteLine($"Request {requestCounter}: 200 (OK).");
+
             return Ok(items);
         }
 
