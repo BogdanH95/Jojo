@@ -23,6 +23,10 @@ namespace Play.Common.MassTransit
                   var rabbitMqSettings = configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>() ?? throw new ArgumentNullException(nameof(RabbitMQSettings));
                   cfg.Host(rabbitMqSettings.Host);
                   cfg.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
+                  cfg.UseMessageRetry(retryConfigurator =>
+                  {
+                      retryConfigurator.Interval(3, TimeSpan.FromSeconds(5));
+                  });
               });
           });
             return services;
