@@ -1,6 +1,5 @@
-using MassTransit;
 using Play.Catalog.Service.Entities;
-using Play.Catalog.Service.Settings;
+using Play.Common.MassTransit;
 using Play.Common.MongoDB;
 using Play.Common.Settings;
 
@@ -22,17 +21,8 @@ namespace Play.Catalog.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMongo()
-                    .AddMongoRepository<Item>("items");
-
-            services.AddMassTransit(x =>
-            {
-                x.UsingRabbitMq((context, cfg) =>
-                {
-                    var rabbitMqSettings = Configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>() ?? throw new ArgumentNullException(nameof(RabbitMQSettings));
-                    cfg.Host(rabbitMqSettings.Host);
-                    cfg.ConfigureEndpoints(context, new KebabCaseEndpointNameFormatter(serviceSettings.ServiceName, false));
-                });
-            });
+                    .AddMongoRepository<Item>("items")
+                    .AddMassTransitWithRabbitMq();
 
             services.AddControllers(options =>
             {
