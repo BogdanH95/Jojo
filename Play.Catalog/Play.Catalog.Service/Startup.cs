@@ -30,7 +30,6 @@ namespace Play.Catalog.Service
             });
 
             services.AddEndpointsApiExplorer();
-            services.AddOpenApi();
             services.AddSwaggerGen();
 
         }

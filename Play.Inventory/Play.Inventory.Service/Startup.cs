@@ -34,7 +34,6 @@ namespace Play.Inventory.Service
             });
 
             services.AddEndpointsApiExplorer();
-            services.AddOpenApi();
             services.AddSwaggerGen();
         }
 
